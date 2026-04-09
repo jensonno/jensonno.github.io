@@ -3,7 +3,644 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blank Website Layout with Games</title>
+    <title>Blank Website<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GameHub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ─── RESET & BASE ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0a0f;
+      --surface:   #12121a;
+      --border:    #1e1e2e;
+      --accent:    #c8ff57;
+      --accent2:   #57c8ff;
+      --text:      #e8e8f0;
+      --muted:     #6b6b80;
+      --card-bg:   #13131d;
+      --nav-h:     64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── STICKY NAVBAR ────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: rgba(10,10,15,0.85);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+    }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      background: var(--accent);
+      color: #0a0a0f;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(200,255,87,0.35);
+      background: #d8ff77;
+    }
+
+    .nav-btn svg { flex-shrink: 0; }
+
+    /* ─── HERO / EXPLANATION SECTION ──────────────────────── */
+    /* ============================================================
+       USER: Edit the content BELOW inside .hero-content to add
+       your site description, tagline, or intro text.
+       ============================================================ */
+    .hero {
+      min-height: 900px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background grid texture */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(200,255,87,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200,255,87,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* Glow blob */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(200,255,87,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.1s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      max-width: 780px;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.25s forwards;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--accent);
+      position: relative;
+    }
+
+    /* ============================================================
+       USER: Edit .hero-description to change the paragraph text.
+       ============================================================ */
+    .hero-description {
+      margin-top: 28px;
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--muted);
+      max-width: 560px;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.4s forwards;
+    }
+
+    /* ============================================================
+       USER: Edit the stat numbers/labels inside .hero-stats.
+       ============================================================ */
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      margin-top: 60px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+      width: 100%;
+      max-width: 680px;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.55s forwards;
+    }
+
+    .stat-item { display: flex; flex-direction: column; gap: 4px; }
+
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -0.03em;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: 48px;
+      left: 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.7s forwards;
+    }
+
+    .scroll-hint::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--muted);
+    }
+
+    /* ─── GAMES SECTION ────────────────────────────────────── */
+    /* ============================================================
+       USER: Add or remove .game-card items inside #games .grid
+             to populate your game library.
+       ============================================================ */
+    #games {
+      padding: 100px 40px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 56px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+
+    .section-count {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+
+    /* ─── GAME GRID ─────────────────────────────────────────── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .game-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .game-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,255,87,0.05) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .game-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(200,255,87,0.4);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,255,87,0.1);
+    }
+
+    .game-card:hover::before { opacity: 1; }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      transition: transform 0.3s;
+    }
+
+    .game-card:hover .card-icon { transform: scale(1.1) rotate(-4deg); }
+
+    .card-genre {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .card-rating {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .card-play {
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+
+    .game-card:hover .card-play { color: var(--accent); }
+
+    .card-play svg { transition: transform 0.2s; }
+    .game-card:hover .card-play svg { transform: translateX(3px); }
+
+    /* ─── FOOTER ────────────────────────────────────────────── */
+    footer {
+      padding: 32px 40px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ─── ANIMATIONS ────────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      header { padding: 0 20px; }
+      .hero  { padding: 80px 20px 60px; min-height: 800px; }
+      .hero-stats { gap: 28px; flex-wrap: wrap; }
+      #games { padding: 64px 20px; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+      .scroll-hint { left: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════════
+       NAVBAR — Edit logo text and button label here
+       ═══════════════════════════════════════════════ -->
+  <header>
+    <a href="#" class="nav-logo">
+      <span></span>
+      GameHub
+    </a>
+    <a href="#games" class="nav-btn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+      Games
+    </a>
+  </header>
+
+  <!-- ═══════════════════════════════════════════════
+       EXPLANATION / HERO SECTION
+       Edit the title, description, and stats below.
+       ═══════════════════════════════════════════════ -->
+  <section class="hero">
+
+    <p class="hero-eyebrow">Curated · Independent · Always Free</p>
+
+    <!-- USER: Change the headline here -->
+    <h1 class="hero-title">
+      Your gateway to<br/>
+      <em>extraordinary</em><br/>
+      games.
+    </h1>
+
+    <!-- USER: Change the description paragraph here -->
+    <p class="hero-description">
+      A hand-picked collection of the world's best games — from sprawling
+      open worlds to sharp, minimal puzzlers. No ads. No noise. Just play.
+    </p>
+
+    <!-- USER: Update the stat numbers and labels to match your content -->
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">120+</span>
+        <span class="stat-label">Games Listed</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">18</span>
+        <span class="stat-label">Genres</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">4.9★</span>
+        <span class="stat-label">Avg. Rating</span>
+      </div>
+    </div>
+
+    <p class="scroll-hint">Scroll to explore</p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════
+       GAMES SECTION — Add / remove .game-card blocks
+       Each card has: icon emoji, genre, title, desc,
+       rating, and a play link.
+       ═══════════════════════════════════════════════ -->
+  <section id="games">
+    <div class="section-header">
+      <div>
+        <p class="section-label">Game Library</p>
+        <!-- USER: Change the heading here -->
+        <h2 class="section-title">Browse the<br/>collection</h2>
+      </div>
+      <span class="section-count">Showing 6 of 120</span>
+    </div>
+
+    <div class="grid">
+
+      <!-- ── CARD 1 ── USER: Edit each card freely ── -->
+      <article class="game-card">
+        <div class="card-icon">🌌</div>
+        <span class="card-genre">Open World · RPG</span>
+        <h3 class="card-title">Stellar Drift</h3>
+        <p class="card-desc">
+          Explore a handcrafted galaxy across 40+ planets. Every decision reshapes the universe around you.
+        </p>
+        <div class="card-footer">
+          <span class="card-rating">★ 9.6</span>
+          <span class="card-play">
+            Play now
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </article>
+
+      <!-- ── CARD 2 ── -->
+      <article class="game-card">
+        <div class="card-icon">🧩</div>
+        <span class="card-genre">Puzzle · Minimal</span>
+        <h3 class="card-title">Monolith</h3>
+        <p class="card-desc">
+          Ninety levels of pure spatial logic. No tutorial, no hand-holding — just you and the grid.
+        </p>
+        <div class="card-footer">
+          <span class="card-rating">★ 9.2</span>
+          <span class="card-play">
+            Play now
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </article>
+
+      <!-- ── CARD 3 ── -->
+      <article class="game-card">
+        <div class="card-icon">⚔️</div>
+        <span class="card-genre">Action · Roguelike</span>
+        <h3 class="card-title">Ironveil</h3>
+        <p class="card-desc">
+          A punishing dungeon crawler with a procedurally generated world that never repeats itself.
+        </p>
+        <div class="card-footer">
+          <span class="card-rating">★ 9.4</span>
+          <span class="card-play">
+            Play now
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </article>
+
+      <!-- ── CARD 4 ── -->
+      <article class="game-card">
+        <div class="card-icon">🌊</div>
+        <span class="card-genre">Simulation · Chill</span>
+        <h3 class="card-title">Tidecraft</h3>
+        <p class="card-desc">
+          Build coastal villages, manage tides, and watch your tiny civilisation thrive or wash away.
+        </p>
+        <div class="card-footer">
+          <span class="card-rating">★ 8.9</span>
+          <span class="card-play">
+            Play now
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </article>
+
+      <!-- ── CARD 5 ── -->
+      <article class="game-card">
+        <div class="card-icon">🎵</div>
+        <span class="card-genre">Rhythm · Arcade</span>
+        <h3 class="card-title">Beatshift</h3>
+        <p class="card-desc">
+          A synesthetic rhythm game where the track morphs to the beat. 200+ songs, infinite replay.
+        </p>
+        <div class="card-footer">
+          <span class="card-rating">★ 9.0</span>
+          <span class="card-play">
+            Play now
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </article>
+
+      <!-- ── CARD 6 ── -->
+      <article class="game-card">
+        <div class="card-icon">🤖</div>
+        <span class="card-genre">Strategy · Sci-Fi</span>
+        <h3 class="card-title">Protocol Zero</h3>
+        <p class="card-desc">
+          Command AI fleets in real-time across interstellar battlefields. Every war has a political cost.
+        </p>
+        <div class="card-footer">
+          <span class="card-rating">★ 9.1</span>
+          <span class="card-play">
+            Play now
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </span>
+        </div>
+      </article>
+
+    </div><!-- /.grid -->
+  </section>
+
+  <!-- ─── FOOTER ───────────────────────────────────── -->
+  <footer>
+    <!-- USER: Update the footer text as needed -->
+    <span>© 2026 GameHub. Built with care.</span>
+    <span>All ratings are community-sourced.</span>
+  </footer>
+
+  <!-- ─── JS: Active nav state on scroll ──────────────── -->
+  <script>
+    // Highlight nav button when #games section is in view
+    const gamesSection = document.getElementById('games');
+    const navBtn = document.querySelector('.nav-btn');
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        navBtn.style.background = entry.isIntersecting
+          ? 'var(--accent2)'
+          : 'var(--accent)';
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(gamesSection);
+
+    // Animate cards in when they enter the viewport
+    const cards = document.querySelectorAll('.game-card');
+    const cardObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            entry.target.style.animation =
+              `fadeUp 0.5s ${i * 0.07}s both`;
+            cardObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    cards.forEach(card => {
+      card.style.opacity = '0';
+      cardObserver.observe(card);
+    });
+  </script>
+</body>
+</html> Layout with Games</title>
     
     <style>
         /* Basic Reset & Smooth Scrolling */
