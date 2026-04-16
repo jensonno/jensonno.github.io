@@ -1,24 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jensonnnnnnnnnnnnnnnnnnn</title>
+  <title>GameHub</title>
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
-    /* ─── RESET & BASE ─────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #0a0a0f;
-      --surface:   #12121a;
-      --border:    #1e1e2e;
-      --accent:    #c8ff57;
-      --accent2:   #57c8ff;
-      --text:      #e8e8f0;
-      --muted:     #6b6b80;
-      --card-bg:   #13131d;
-      --nav-h:     64px;
+      --bg:       #0a0a0f;
+      --surface:  #12121a;
+      --border:   #1e1e2e;
+      --accent:   #c8ff57;
+      --accent2:  #57c8ff;
+      --text:     #e8e8f0;
+      --muted:    #6b6b80;
+      --card-bg:  #13131d;
+      --nav-h:    64px;
     }
 
     html { scroll-behavior: smooth; }
@@ -31,608 +30,512 @@
       overflow-x: hidden;
     }
 
-    /* ─── STICKY NAVBAR ────────────────────────────────────── */
+    /* ── PAGES ───────────────────────────────────── */
+    .page { display: none; }
+    .page.active { display: block; }
+    #page-monolith.active { display: flex; flex-direction: column; }
+
+    /* ── NAVBAR ──────────────────────────────────── */
     header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      position: sticky; top: 0; z-index: 100;
       height: var(--nav-h);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 0 40px;
-      background: rgba(10,10,15,0.85);
+      background: rgba(10,10,15,0.88);
       backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border);
-      transition: border-color 0.3s;
     }
-
     .nav-logo {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.35rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem;
+      letter-spacing: -0.02em; color: var(--text); text-decoration: none;
+      display: flex; align-items: center; gap: 10px; cursor: pointer;
     }
-
     .nav-logo span {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent); box-shadow: 0 0 10px var(--accent);
       display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
     }
-
     .nav-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 22px;
-      background: var(--accent);
-      color: #0a0a0f;
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 0.85rem;
-      letter-spacing: 0.04em;
-      text-decoration: none;
-      border-radius: 6px;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; background: var(--accent); color: #0a0a0f;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem;
+      letter-spacing: 0.04em; text-decoration: none; border-radius: 6px;
+      border: none; cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
     }
+    .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(200,255,87,0.35); background: #d8ff77; }
+    .nav-btn.back-btn { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+    .nav-btn.back-btn:hover { background: var(--border); color: var(--text); box-shadow: none; transform: none; }
 
-    .nav-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 24px rgba(200,255,87,0.35);
-      background: #d8ff77;
-    }
-
-    .nav-btn svg { flex-shrink: 0; }
-
-    /* ─── HERO / EXPLANATION SECTION ──────────────────────── */
-    /* ============================================================
-       USER: Edit the content BELOW inside .hero-content to add
-       your site description, tagline, or intro text.
-       ============================================================ */
+    /* ── HERO ────────────────────────────────────── */
     .hero {
       min-height: 900px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 120px 40px 80px;
-      position: relative;
-      overflow: hidden;
+      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+      padding: 120px 40px 80px; position: relative; overflow: hidden;
     }
-
-    /* Background grid texture */
     .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(200,255,87,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(200,255,87,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      pointer-events: none;
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(200,255,87,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,255,87,0.04) 1px, transparent 1px);
+      background-size: 60px 60px; pointer-events: none;
     }
-
-    /* Glow blob */
     .hero::after {
-      content: '';
-      position: absolute;
-      top: -200px;
-      right: -200px;
-      width: 600px;
-      height: 600px;
-      background: radial-gradient(circle, rgba(200,255,87,0.08) 0%, transparent 70%);
-      pointer-events: none;
+      content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200,255,87,0.08) 0%, transparent 70%); pointer-events: none;
     }
-
     .hero-eyebrow {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.1s forwards;
+      font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px;
+      opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
     }
-
     .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.8rem, 6vw, 5.5rem);
-      font-weight: 800;
-      line-height: 1.05;
-      letter-spacing: -0.03em;
-      max-width: 780px;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.25s forwards;
+      font-family: 'Syne', sans-serif; font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; max-width: 780px;
+      opacity: 0; animation: fadeUp 0.6s 0.25s forwards;
     }
-
-    .hero-title em {
-      font-style: normal;
-      color: var(--accent);
-      position: relative;
-    }
-
-    /* ============================================================
-       USER: Edit .hero-description to change the paragraph text.
-       ============================================================ */
+    .hero-title em { font-style: normal; color: var(--accent); }
     .hero-description {
-      margin-top: 28px;
-      font-size: 1.1rem;
-      font-weight: 300;
-      line-height: 1.75;
-      color: var(--muted);
-      max-width: 560px;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.4s forwards;
+      margin-top: 28px; font-size: 1.1rem; font-weight: 300; line-height: 1.75;
+      color: var(--muted); max-width: 560px; opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
     }
-
-    /* ============================================================
-       USER: Edit the stat numbers/labels inside .hero-stats.
-       ============================================================ */
     .hero-stats {
-      display: flex;
-      gap: 48px;
-      margin-top: 60px;
-      padding-top: 40px;
-      border-top: 1px solid var(--border);
-      width: 100%;
-      max-width: 680px;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.55s forwards;
+      display: flex; gap: 48px; margin-top: 60px; padding-top: 40px;
+      border-top: 1px solid var(--border); width: 100%; max-width: 680px;
+      opacity: 0; animation: fadeUp 0.6s 0.55s forwards;
     }
-
     .stat-item { display: flex; flex-direction: column; gap: 4px; }
-
-    .stat-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--text);
-      letter-spacing: -0.03em;
-    }
-
-    .stat-label {
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    /* scroll hint */
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text); letter-spacing: -0.03em; }
+    .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
     .scroll-hint {
-      position: absolute;
-      bottom: 48px;
-      left: 40px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      opacity: 0;
-      animation: fadeUp 0.6s 0.7s forwards;
+      position: absolute; bottom: 48px; left: 40px; display: flex; align-items: center; gap: 12px;
+      font-size: 0.78rem; color: var(--muted); letter-spacing: 0.08em; opacity: 0; animation: fadeUp 0.6s 0.7s forwards;
     }
+    .scroll-hint::before { content: ''; display: block; width: 40px; height: 1px; background: var(--muted); }
 
-    .scroll-hint::before {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 1px;
-      background: var(--muted);
-    }
+    /* ── GAMES SECTION ───────────────────────────── */
+    #games { padding: 100px 40px; background: var(--surface); border-top: 1px solid var(--border); }
+    .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; flex-wrap: wrap; gap: 16px; }
+    .section-label { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
+    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+    .section-count { font-family: 'Syne', sans-serif; font-size: 0.82rem; color: var(--muted); }
 
-    /* ─── GAMES SECTION ────────────────────────────────────── */
-    /* ============================================================
-       USER: Add or remove .game-card items inside #games .grid
-             to populate your game library.
-       ============================================================ */
-    #games {
-      padding: 100px 40px;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-    }
-
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 56px;
-      flex-wrap: wrap;
-      gap: 16px;
-    }
-
-    .section-label {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-
-    .section-count {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.82rem;
-      color: var(--muted);
-    }
-
-    /* ─── GAME GRID ─────────────────────────────────────────── */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 20px;
-    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
 
     .game-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 28px 24px;
-      position: relative;
-      cursor: pointer;
+      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+      padding: 28px 24px; position: relative; cursor: pointer;
       transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      overflow: hidden; display: flex; flex-direction: column; gap: 14px;
     }
-
     .game-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+      content: ''; position: absolute; inset: 0;
       background: linear-gradient(135deg, rgba(200,255,87,0.05) 0%, transparent 60%);
-      opacity: 0;
-      transition: opacity 0.3s;
+      opacity: 0; transition: opacity 0.3s;
     }
-
-    .game-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(200,255,87,0.4);
-      box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,255,87,0.1);
-    }
-
+    .game-card:hover { transform: translateY(-5px); border-color: rgba(200,255,87,0.4); box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,255,87,0.1); }
     .game-card:hover::before { opacity: 1; }
-
-    .card-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 10px;
-      background: var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      transition: transform 0.3s;
-    }
-
+    .card-icon { width: 48px; height: 48px; border-radius: 10px; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform 0.3s; }
     .game-card:hover .card-icon { transform: scale(1.1) rotate(-4deg); }
-
-    .card-genre {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      line-height: 1.3;
-    }
-
-    .card-desc {
-      font-size: 0.82rem;
-      color: var(--muted);
-      line-height: 1.6;
-      flex: 1;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 8px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-    }
-
-    .card-rating {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .card-play {
-      font-size: 0.72rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      transition: color 0.2s;
-    }
-
+    .card-genre { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .card-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
+    .card-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; flex: 1; }
+    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .card-rating { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--accent); }
+    .card-play { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
     .game-card:hover .card-play { color: var(--accent); }
-
     .card-play svg { transition: transform 0.2s; }
     .game-card:hover .card-play svg { transform: translateX(3px); }
 
-    /* ─── FOOTER ────────────────────────────────────────────── */
+    .game-card.playable { border-color: rgba(200,255,87,0.25); }
+    .playable-badge {
+      position: absolute; top: 14px; right: 14px;
+      font-family: 'Syne', sans-serif; font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: var(--accent); color: #0a0a0f; padding: 3px 8px; border-radius: 4px;
+    }
+
     footer {
-      padding: 32px 40px;
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-size: 0.78rem;
-      color: var(--muted);
+      padding: 32px 40px; background: var(--bg); border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 0.78rem; color: var(--muted);
     }
 
-    /* ─── ANIMATIONS ────────────────────────────────────────── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(22px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ══════════════════════════════════════════════
+       MONOLITH GAME PAGE
+    ══════════════════════════════════════════════ */
+    .game-page-header {
+      padding: 56px 40px 40px; border-bottom: 1px solid var(--border);
+      background: var(--surface); position: relative; overflow: hidden;
     }
+    .game-page-header::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(200,255,87,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,255,87,0.03) 1px, transparent 1px);
+      background-size: 40px 40px; pointer-events: none;
+    }
+    .game-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .game-meta-badge { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid var(--border); color: var(--muted); padding: 4px 10px; border-radius: 4px; }
+    .game-page-title { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 16px; }
+    .game-page-title em { font-style: normal; color: var(--accent); }
+    .game-page-desc { font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 520px; }
 
-    /* ─── RESPONSIVE ────────────────────────────────────────── */
+    .game-arena { flex: 1; padding: 48px 40px; display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap; }
+
+    /* ── BOARD ───────────────────────────────────── */
+    .puzzle-wrapper { flex: 0 0 auto; }
+    .puzzle-status {
+      font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 20px; display: flex; align-items: center; gap: 16px;
+    }
+    .puzzle-status .level-tag { color: var(--accent); background: rgba(200,255,87,0.1); padding: 4px 10px; border-radius: 4px; }
+
+    #puzzle-board { display: grid; gap: 6px; user-select: none; }
+
+    .cell {
+      width: 68px; height: 68px; border-radius: 8px;
+      border: 2px solid var(--border); background: var(--card-bg);
+      cursor: pointer; position: relative;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.15s;
+    }
+    .cell.on { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 16px rgba(200,255,87,0.5), 0 0 4px rgba(200,255,87,0.8); }
+    .cell:hover { transform: scale(0.94); }
+    .cell.flash { animation: cellFlash 0.25s ease; }
+
+    /* ── WIN OVERLAY ─────────────────────────────── */
+    .win-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(10,10,15,0.92); align-items: center; justify-content: center;
+      flex-direction: column; gap: 24px; backdrop-filter: blur(8px);
+    }
+    .win-overlay.show { display: flex; }
+    .win-icon { font-size: 4rem; animation: popIn 0.4s ease; }
+    .win-title { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; color: var(--accent); animation: popIn 0.4s 0.1s both; }
+    .win-sub { color: var(--muted); font-size: 0.95rem; animation: fadeUp 0.4s 0.2s both; }
+    .win-actions { display: flex; gap: 12px; animation: fadeUp 0.4s 0.3s both; }
+    .btn-next { padding: 12px 28px; background: var(--accent); color: #0a0a0f; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; letter-spacing: 0.03em; transition: transform 0.2s, box-shadow 0.2s; }
+    .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,255,87,0.35); }
+    .btn-retry { padding: 12px 28px; background: transparent; color: var(--muted); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .btn-retry:hover { background: var(--border); color: var(--text); }
+
+    /* ── SIDEBAR ─────────────────────────────────── */
+    .game-sidebar { flex: 1; min-width: 240px; padding-top: 44px; }
+    .sidebar-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+    .sidebar-heading { font-family: 'Syne', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .moves-display { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; letter-spacing: -0.04em; color: var(--text); line-height: 1; }
+    .moves-label { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+
+    .level-dots { display: flex; gap: 8px; flex-wrap: wrap; }
+    .level-dot {
+      width: 28px; height: 28px; border-radius: 6px; background: var(--border); border: 1px solid var(--border);
+      cursor: pointer; font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; color: var(--muted);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .level-dot.current { background: var(--accent); color: #0a0a0f; border-color: var(--accent); }
+    .level-dot.done { background: rgba(200,255,87,0.15); color: var(--accent); border-color: rgba(200,255,87,0.3); }
+    .level-dot:hover:not(.current) { border-color: var(--accent); color: var(--accent); }
+
+    .rules-list { display: flex; flex-direction: column; gap: 12px; }
+    .rule-item { display: flex; align-items: flex-start; gap: 10px; }
+    .rule-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-top: 6px; flex-shrink: 0; }
+    .rule-text { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+
+    .btn-reset { width: 100%; padding: 12px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; transition: background 0.2s, color 0.2s; }
+    .btn-reset:hover { background: var(--border); color: var(--text); }
+
+    /* ── ANIMATIONS ──────────────────────────────── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes cellFlash { 0%{ transform: scale(0.88); } 60%{ transform: scale(1.06); } 100%{ transform: scale(1); } }
+    @keyframes popIn { 0%{ opacity:0; transform: scale(0.6); } 70%{ transform: scale(1.1); } 100%{ opacity:1; transform: scale(1); } }
+
     @media (max-width: 640px) {
       header { padding: 0 20px; }
-      .hero  { padding: 80px 20px 60px; min-height: 800px; }
+      .hero { padding: 80px 20px 60px; min-height: 800px; }
       .hero-stats { gap: 28px; flex-wrap: wrap; }
       #games { padding: 64px 20px; }
       footer { flex-direction: column; gap: 8px; text-align: center; }
-      .scroll-hint { left: 20px; }
+      .game-page-header { padding: 40px 20px 28px; }
+      .game-arena { padding: 32px 20px; gap: 32px; }
+      .cell { width: 54px; height: 54px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ═══════════════════════════════════════════════
-       NAVBAR — Edit logo text and button label here
-       ═══════════════════════════════════════════════ -->
-  <header>
-    <a href="#" class="nav-logo">
-      <span></span>
-      Jensonnnnnnnnnnnnnnnnnnnnnnnn
-    </a>
-    <a href="#games" class="nav-btn">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="5 3 19 12 5 21 5 3"/>
-      </svg>
-      Games
-    </a>
-  </header>
+<!-- STICKY HEADER -->
+<header>
+  <div class="nav-logo" id="logo-home"><span></span>GameHub</div>
+  <button class="nav-btn" id="nav-action-btn">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+    Games
+  </button>
+</header>
 
-  <!-- ═══════════════════════════════════════════════
-       EXPLANATION / HERO SECTION
-       Edit the title, description, and stats below.
-       ═══════════════════════════════════════════════ -->
+<!-- ══════════════════ HOME PAGE ══════════════════ -->
+<div id="page-home" class="page active">
   <section class="hero">
-
     <p class="hero-eyebrow">Curated · Independent · Always Free</p>
-
-    <!-- USER: Change the headline here -->
-    <h1 class="hero-title">
-      Your gateway to<br/>
-      <em>extraordinary</em><br/>
-      games.
-    </h1>
-
-    <!-- USER: Change the description paragraph here -->
-    <p class="hero-description">
-      A hand-picked collection of the world's best games — from sprawling
-      open worlds to sharp, minimal puzzlers. No ads. No noise. Just play.
-    </p>
-
-    <!-- USER: Update the stat numbers and labels to match your content -->
+    <h1 class="hero-title">Your gateway to<br/><em>extraordinary</em><br/>games.</h1>
+    <p class="hero-description">A hand-picked collection of the world's best games — from sprawling open worlds to sharp, minimal puzzlers. No ads. No noise. Just play.</p>
     <div class="hero-stats">
-      <div class="stat-item">
-        <span class="stat-num">-20</span>
-        <span class="stat-label">Games Listed</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">no</span>
-        <span class="stat-label">Genres</span>
-      </div>
-      <div class="stat-item">
-        <span class="stat-num">Best of the best★</span>
-        <span class="stat-label">Avg. Rating</span>
-      </div>
+      <div class="stat-item"><span class="stat-num">120+</span><span class="stat-label">Games Listed</span></div>
+      <div class="stat-item"><span class="stat-num">18</span><span class="stat-label">Genres</span></div>
+      <div class="stat-item"><span class="stat-num">4.9★</span><span class="stat-label">Avg. Rating</span></div>
     </div>
-
     <p class="scroll-hint">Scroll to explore</p>
   </section>
 
-  <!-- ═══════════════════════════════════════════════
-       GAMES SECTION — Add / remove .game-card blocks
-       Each card has: icon emoji, genre, title, desc,
-       rating, and a play link.
-       ═══════════════════════════════════════════════ -->
   <section id="games">
     <div class="section-header">
       <div>
         <p class="section-label">Game Library</p>
-        <!-- USER: Change the heading here -->
         <h2 class="section-title">Browse the<br/>collection</h2>
       </div>
       <span class="section-count">Showing 6 of 120</span>
     </div>
-
     <div class="grid">
 
-      <!-- ── CARD 1 ── USER: Edit each card freely ── -->
-      <article class="game-card">
-        <div class="card-icon">🌌</div>
-        <span class="card-genre">Open World · RPG</span>
-        <h3 class="card-title">Stellar Drift</h3>
-        <p class="card-desc">
-          Explore a handcrafted galaxy across 40+ planets. Every decision reshapes the universe around you.
-        </p>
-        <div class="card-footer">
-          <span class="card-rating">★ 9.6</span>
-          <span class="card-play">
-            Play now
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </div>
-      </article>
-
-      <!-- ── CARD 2 ── -->
-      <article class="game-card">
+      <!-- MONOLITH — fully playable -->
+      <article class="game-card playable" id="card-monolith">
+        <div class="playable-badge">▶ Playable</div>
         <div class="card-icon">🧩</div>
         <span class="card-genre">Puzzle · Minimal</span>
         <h3 class="card-title">Monolith</h3>
-        <p class="card-desc">
-          Ninety levels of pure spatial logic. No tutorial, no hand-holding — just you and the grid.
-        </p>
+        <p class="card-desc">Ninety levels of pure spatial logic. No tutorial, no hand-holding — just you and the grid.</p>
         <div class="card-footer">
           <span class="card-rating">★ 9.2</span>
-          <span class="card-play">
-            Play now
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
+          <span class="card-play">Play now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </div>
       </article>
 
-      <!-- ── CARD 3 ── -->
       <article class="game-card">
-        <div class="card-icon">⚔️</div>
-        <span class="card-genre">Action · Roguelike</span>
+        <div class="card-icon">🌌</div><span class="card-genre">Open World · RPG</span>
+        <h3 class="card-title">Stellar Drift</h3>
+        <p class="card-desc">Explore a handcrafted galaxy across 40+ planets. Every decision reshapes the universe around you.</p>
+        <div class="card-footer"><span class="card-rating">★ 9.6</span><span class="card-play">Coming soon <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
+      </article>
+
+      <article class="game-card">
+        <div class="card-icon">⚔️</div><span class="card-genre">Action · Roguelike</span>
         <h3 class="card-title">Ironveil</h3>
-        <p class="card-desc">
-          A punishing dungeon crawler with a procedurally generated world that never repeats itself.
-        </p>
-        <div class="card-footer">
-          <span class="card-rating">★ 9.4</span>
-          <span class="card-play">
-            Play now
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </div>
+        <p class="card-desc">A punishing dungeon crawler with a procedurally generated world that never repeats itself.</p>
+        <div class="card-footer"><span class="card-rating">★ 9.4</span><span class="card-play">Coming soon <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </article>
 
-      <!-- ── CARD 4 ── -->
       <article class="game-card">
-        <div class="card-icon">🌊</div>
-        <span class="card-genre">Simulation · Chill</span>
+        <div class="card-icon">🌊</div><span class="card-genre">Simulation · Chill</span>
         <h3 class="card-title">Tidecraft</h3>
-        <p class="card-desc">
-          Build coastal villages, manage tides, and watch your tiny civilisation thrive or wash away.
-        </p>
-        <div class="card-footer">
-          <span class="card-rating">★ 8.9</span>
-          <span class="card-play">
-            Play now
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </div>
+        <p class="card-desc">Build coastal villages, manage tides, and watch your tiny civilisation thrive or wash away.</p>
+        <div class="card-footer"><span class="card-rating">★ 8.9</span><span class="card-play">Coming soon <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </article>
 
-      <!-- ── CARD 5 ── -->
       <article class="game-card">
-        <div class="card-icon">🎵</div>
-        <span class="card-genre">Rhythm · Arcade</span>
+        <div class="card-icon">🎵</div><span class="card-genre">Rhythm · Arcade</span>
         <h3 class="card-title">Beatshift</h3>
-        <p class="card-desc">
-          A synesthetic rhythm game where the track morphs to the beat. 200+ songs, infinite replay.
-        </p>
-        <div class="card-footer">
-          <span class="card-rating">★ 9.0</span>
-          <span class="card-play">
-            Play now
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </div>
+        <p class="card-desc">A synesthetic rhythm game where the track morphs to the beat. 200+ songs, infinite replay.</p>
+        <div class="card-footer"><span class="card-rating">★ 9.0</span><span class="card-play">Coming soon <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </article>
 
-      <!-- ── CARD 6 ── -->
       <article class="game-card">
-        <div class="card-icon">🤖</div>
-        <span class="card-genre">Strategy · Sci-Fi</span>
+        <div class="card-icon">🤖</div><span class="card-genre">Strategy · Sci-Fi</span>
         <h3 class="card-title">Protocol Zero</h3>
-        <p class="card-desc">
-          Command AI fleets in real-time across interstellar battlefields. Every war has a political cost.
-        </p>
-        <div class="card-footer">
-          <span class="card-rating">★ 9.1</span>
-          <span class="card-play">
-            Play now
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </span>
-        </div>
+        <p class="card-desc">Command AI fleets in real-time across interstellar battlefields. Every war has a political cost.</p>
+        <div class="card-footer"><span class="card-rating">★ 9.1</span><span class="card-play">Coming soon <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </article>
 
-    </div><!-- /.grid -->
+    </div>
   </section>
 
-  <!-- ─── FOOTER ───────────────────────────────────── -->
   <footer>
-    <!-- USER: Update the footer text as needed -->
-    <span>© 2026 Jensonnnnnnnnnnn. Built with care.</span>
+    <span>© 2026 GameHub. Built with care.</span>
     <span>All ratings are community-sourced.</span>
   </footer>
+</div>
 
-  <!-- ─── JS: Active nav state on scroll ──────────────── -->
-  <script>
-    // Highlight nav button when #games section is in view
-    const gamesSection = document.getElementById('games');
-    const navBtn = document.querySelector('.nav-btn');
+<!-- ══════════════════ MONOLITH GAME PAGE ══════════════════ -->
+<div id="page-monolith" class="page">
+  <div class="game-page-header">
+    <div class="game-meta">
+      <span class="game-meta-badge">Puzzle</span>
+      <span class="game-meta-badge">Minimal</span>
+      <span class="game-meta-badge">★ 9.2</span>
+    </div>
+    <h1 class="game-page-title"><em>Mono</em>lith</h1>
+    <p class="game-page-desc">Click any glowing cell to toggle it and its neighbours. Extinguish every light to clear the level. Simple rules. Ruthless depth.</p>
+  </div>
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        navBtn.style.background = entry.isIntersecting
-          ? 'var(--accent2)'
-          : 'var(--accent)';
-      },
-      { threshold: 0.1 }
-    );
+  <div class="game-arena">
+    <div class="puzzle-wrapper">
+      <div class="puzzle-status">
+        <span class="level-tag" id="level-label">Level 1</span>
+        <span id="moves-inline">0 moves</span>
+      </div>
+      <div id="puzzle-board"></div>
+    </div>
 
-    observer.observe(gamesSection);
+    <div class="game-sidebar">
+      <div class="sidebar-card">
+        <p class="sidebar-heading">Moves</p>
+        <div class="moves-display" id="moves-counter">0</div>
+        <div class="moves-label">taps this level</div>
+      </div>
+      <div class="sidebar-card">
+        <p class="sidebar-heading">Levels</p>
+        <div class="level-dots" id="level-dots"></div>
+      </div>
+      <div class="sidebar-card">
+        <p class="sidebar-heading">How to play</p>
+        <div class="rules-list">
+          <div class="rule-item"><div class="rule-dot"></div><p class="rule-text">Tap a cell to toggle it <em>and</em> all 4 adjacent neighbours.</p></div>
+          <div class="rule-item"><div class="rule-dot"></div><p class="rule-text">Goal: turn every <span style="color:var(--accent)">glowing cell</span> off.</p></div>
+          <div class="rule-item"><div class="rule-dot"></div><p class="rule-text">Fewer moves = higher mastery. Find the optimal path.</p></div>
+        </div>
+      </div>
+      <button class="btn-reset" id="btn-reset">↺ &nbsp; Reset Level</button>
+    </div>
+  </div>
+</div>
 
-    // Animate cards in when they enter the viewport
-    const cards = document.querySelectorAll('.game-card');
-    const cardObserver = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry, i) => {
-          if (entry.isIntersecting) {
-            entry.target.style.animation =
-              `fadeUp 0.5s ${i * 0.07}s both`;
-            cardObserver.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+<!-- WIN OVERLAY -->
+<div class="win-overlay" id="win-overlay">
+  <div class="win-icon">✦</div>
+  <div class="win-title">Level Clear</div>
+  <p class="win-sub" id="win-sub-text">Solved in 0 moves</p>
+  <div class="win-actions">
+    <button class="btn-next" id="btn-next-level">Next Level →</button>
+    <button class="btn-retry" id="btn-retry">Retry</button>
+  </div>
+</div>
 
-    cards.forEach(card => {
-      card.style.opacity = '0';
-      cardObserver.observe(card);
-    });
-  </script>
+<script>
+/* ── ROUTING ─────────────────────────────────────────────── */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+  const isGame = id !== 'page-home';
+  const btn = document.getElementById('nav-action-btn');
+  btn.innerHTML = isGame
+    ? '← Back'
+    : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Games`;
+  btn.classList.toggle('back-btn', isGame);
+}
+
+document.getElementById('logo-home').addEventListener('click', () => showPage('page-home'));
+
+document.getElementById('nav-action-btn').addEventListener('click', () => {
+  if (document.getElementById('nav-action-btn').classList.contains('back-btn')) {
+    showPage('page-home');
+  } else {
+    showPage('page-home');
+    setTimeout(() => document.getElementById('games').scrollIntoView({ behavior: 'smooth' }), 50);
+  }
+});
+
+document.getElementById('card-monolith').addEventListener('click', () => {
+  showPage('page-monolith');
+  loadLevel(currentLevel);
+});
+
+/* ── LIGHTS-OUT ENGINE ───────────────────────────────────── */
+const LEVELS = [
+  [[0,0,1,0,0],[0,1,1,1,0],[1,1,0,1,1],[0,1,1,1,0],[0,0,1,0,0]],   // 1 – cross
+  [[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,1,0,1,0],[1,0,0,0,1]],   // 2 – X
+  [[1,0,1,0,1],[0,0,0,0,0],[1,0,1,0,1],[0,0,0,0,0],[1,0,1,0,1]],   // 3 – sparse checker
+  [[1,1,1,1,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,1]],   // 4 – ring
+  [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]],   // 5 – full
+];
+
+let currentLevel = 0;
+let state = [];
+let moves = 0;
+let completedLevels = new Set();
+
+function deepCopy(g) { return g.map(r => [...r]); }
+
+function loadLevel(idx) {
+  currentLevel = idx;
+  state = deepCopy(LEVELS[idx]);
+  moves = 0;
+  updateMoves();
+  renderBoard();
+  updateLevelDots();
+  document.getElementById('level-label').textContent = `Level ${idx + 1}`;
+  document.getElementById('win-overlay').classList.remove('show');
+}
+
+function toggle(r, c) {
+  const s = state.length;
+  [[r,c],[r-1,c],[r+1,c],[r,c-1],[r,c+1]].forEach(([nr,nc]) => {
+    if (nr >= 0 && nr < s && nc >= 0 && nc < s) state[nr][nc] ^= 1;
+  });
+}
+
+function handleClick(r, c) {
+  toggle(r, c);
+  moves++;
+  updateMoves();
+  renderBoard();
+  const idx = r * state.length + c;
+  const cell = document.querySelectorAll('.cell')[idx];
+  cell.classList.remove('flash');
+  void cell.offsetWidth;
+  cell.classList.add('flash');
+  if (state.every(row => row.every(v => v === 0))) {
+    completedLevels.add(currentLevel);
+    updateLevelDots();
+    setTimeout(showWin, 320);
+  }
+}
+
+function showWin() {
+  document.getElementById('win-sub-text').textContent = `Solved in ${moves} move${moves !== 1 ? 's' : ''}`;
+  document.getElementById('win-overlay').classList.add('show');
+}
+
+function renderBoard() {
+  const board = document.getElementById('puzzle-board');
+  const s = state.length;
+  board.style.gridTemplateColumns = `repeat(${s}, 1fr)`;
+  board.innerHTML = '';
+  state.forEach((row, r) => row.forEach((val, c) => {
+    const cell = document.createElement('div');
+    cell.className = 'cell' + (val ? ' on' : '');
+    cell.addEventListener('click', () => handleClick(r, c));
+    board.appendChild(cell);
+  }));
+}
+
+function updateMoves() {
+  document.getElementById('moves-counter').textContent = moves;
+  document.getElementById('moves-inline').textContent = `${moves} move${moves !== 1 ? 's' : ''}`;
+}
+
+function updateLevelDots() {
+  const c = document.getElementById('level-dots');
+  c.innerHTML = '';
+  LEVELS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'level-dot' + (i === currentLevel ? ' current' : '') + (completedLevels.has(i) && i !== currentLevel ? ' done' : '');
+    d.textContent = i + 1;
+    d.addEventListener('click', () => loadLevel(i));
+    c.appendChild(d);
+  });
+}
+
+document.getElementById('btn-reset').addEventListener('click', () => loadLevel(currentLevel));
+document.getElementById('btn-retry').addEventListener('click', () => loadLevel(currentLevel));
+document.getElementById('btn-next-level').addEventListener('click', () => {
+  loadLevel((currentLevel + 1) % LEVELS.length);
+});
+
+/* ── Card fade-in on scroll ──────────────────────────────── */
+const cards = document.querySelectorAll('.game-card');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { e.target.style.animation = `fadeUp 0.5s ${i * 0.07}s both`; obs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+cards.forEach(c => { c.style.opacity = '0'; obs.observe(c); });
+</script>
 </body>
 </html>
