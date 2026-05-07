@@ -7,261 +7,242 @@
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:       #0a0a0f;
-      --surface:  #12121a;
-      --border:   #1e1e2e;
-      --accent:   #c8ff57;
-      --accent2:  #57c8ff;
-      --text:     #e8e8f0;
-      --muted:    #6b6b80;
-      --card-bg:  #13131d;
-      --nav-h:    64px;
+      --bg:#0a0a0f; --surface:#12121a; --border:#1e1e2e;
+      --accent:#c8ff57; --accent2:#57c8ff; --text:#e8e8f0;
+      --muted:#6b6b80; --card-bg:#13131d; --nav-h:64px;
     }
-
     html { scroll-behavior: smooth; }
+    body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    .page { display:none; }
+    .page.active { display:block; }
+    #page-roadkill.active { display:flex; flex-direction:column; min-height:calc(100vh - var(--nav-h)); }
 
-    /* ── PAGES ───────────────────────────────────── */
-    .page { display: none; }
-    .page.active { display: block; }
-    #page-monolith.active { display: flex; flex-direction: column; }
+    /* ── NAV ── */
+    header { position:sticky; top:0; z-index:100; height:var(--nav-h); display:flex; align-items:center; justify-content:space-between; padding:0 40px; background:rgba(10,10,15,0.88); backdrop-filter:blur(18px); border-bottom:1px solid var(--border); }
+    .nav-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.35rem; letter-spacing:-0.02em; color:var(--text); display:flex; align-items:center; gap:10px; cursor:pointer; }
+    .nav-logo span { width:10px; height:10px; border-radius:50%; background:var(--accent); box-shadow:0 0 10px var(--accent); display:inline-block; }
+    .nav-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 22px; background:var(--accent); color:#0a0a0f; font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; letter-spacing:0.04em; border-radius:6px; border:none; cursor:pointer; transition:transform 0.2s,box-shadow 0.2s,background 0.2s; }
+    .nav-btn:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(200,255,87,0.35); background:#d8ff77; }
+    .nav-btn.back-btn { background:transparent; color:var(--muted); border:1px solid var(--border); }
+    .nav-btn.back-btn:hover { background:var(--border); color:var(--text); box-shadow:none; transform:none; }
 
-    /* ── NAVBAR ──────────────────────────────────── */
-    header {
-      position: sticky; top: 0; z-index: 100;
-      height: var(--nav-h);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 40px;
-      background: rgba(10,10,15,0.88);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.35rem;
-      letter-spacing: -0.02em; color: var(--text); text-decoration: none;
-      display: flex; align-items: center; gap: 10px; cursor: pointer;
-    }
-    .nav-logo span {
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--accent); box-shadow: 0 0 10px var(--accent);
-      display: inline-block;
-    }
-    .nav-btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 22px; background: var(--accent); color: #0a0a0f;
-      font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.85rem;
-      letter-spacing: 0.04em; text-decoration: none; border-radius: 6px;
-      border: none; cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-    }
-    .nav-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 24px rgba(200,255,87,0.35); background: #d8ff77; }
-    .nav-btn.back-btn { background: transparent; color: var(--muted); border: 1px solid var(--border); }
-    .nav-btn.back-btn:hover { background: var(--border); color: var(--text); box-shadow: none; transform: none; }
+    /* ── HERO ── */
+    .hero { min-height:900px; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; padding:120px 40px 80px; position:relative; overflow:hidden; }
+    .hero::before { content:''; position:absolute; inset:0; background-image:linear-gradient(rgba(200,255,87,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(200,255,87,0.04) 1px,transparent 1px); background-size:60px 60px; pointer-events:none; }
+    .hero::after { content:''; position:absolute; top:-200px; right:-200px; width:600px; height:600px; background:radial-gradient(circle,rgba(200,255,87,0.08) 0%,transparent 70%); pointer-events:none; }
+    .hero-eyebrow { font-family:'Syne',sans-serif; font-size:0.75rem; font-weight:600; letter-spacing:0.15em; color:var(--accent); text-transform:uppercase; margin-bottom:20px; opacity:0; animation:fadeUp 0.6s 0.1s forwards; }
+    .hero-title { font-family:'Syne',sans-serif; font-size:clamp(2.8rem,6vw,5.5rem); font-weight:800; line-height:1.05; letter-spacing:-0.03em; max-width:780px; opacity:0; animation:fadeUp 0.6s 0.25s forwards; }
+    .hero-title em { font-style:normal; color:var(--accent); }
+    .hero-description { margin-top:28px; font-size:1.1rem; font-weight:300; line-height:1.75; color:var(--muted); max-width:560px; opacity:0; animation:fadeUp 0.6s 0.4s forwards; }
+    .hero-stats { display:flex; gap:48px; margin-top:60px; padding-top:40px; border-top:1px solid var(--border); width:100%; max-width:680px; opacity:0; animation:fadeUp 0.6s 0.55s forwards; }
+    .stat-item { display:flex; flex-direction:column; gap:4px; }
+    .stat-num { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--text); letter-spacing:-0.03em; }
+    .stat-label { font-size:0.78rem; color:var(--muted); letter-spacing:0.05em; text-transform:uppercase; }
+    .scroll-hint { position:absolute; bottom:48px; left:40px; display:flex; align-items:center; gap:12px; font-size:0.78rem; color:var(--muted); letter-spacing:0.08em; opacity:0; animation:fadeUp 0.6s 0.7s forwards; }
+    .scroll-hint::before { content:''; display:block; width:40px; height:1px; background:var(--muted); }
 
-    /* ── HERO ────────────────────────────────────── */
-    .hero {
-      min-height: 900px;
-      display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
-      padding: 120px 40px 80px; position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: linear-gradient(rgba(200,255,87,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(200,255,87,0.04) 1px, transparent 1px);
-      background-size: 60px 60px; pointer-events: none;
-    }
-    .hero::after {
-      content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(200,255,87,0.08) 0%, transparent 70%); pointer-events: none;
-    }
-    .hero-eyebrow {
-      font-family: 'Syne', sans-serif; font-size: 0.75rem; font-weight: 600;
-      letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; margin-bottom: 20px;
-      opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
-    }
-    .hero-title {
-      font-family: 'Syne', sans-serif; font-size: clamp(2.8rem, 6vw, 5.5rem);
-      font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; max-width: 780px;
-      opacity: 0; animation: fadeUp 0.6s 0.25s forwards;
-    }
-    .hero-title em { font-style: normal; color: var(--accent); }
-    .hero-description {
-      margin-top: 28px; font-size: 1.1rem; font-weight: 300; line-height: 1.75;
-      color: var(--muted); max-width: 560px; opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
-    }
-    .hero-stats {
-      display: flex; gap: 48px; margin-top: 60px; padding-top: 40px;
-      border-top: 1px solid var(--border); width: 100%; max-width: 680px;
-      opacity: 0; animation: fadeUp 0.6s 0.55s forwards;
-    }
-    .stat-item { display: flex; flex-direction: column; gap: 4px; }
-    .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--text); letter-spacing: -0.03em; }
-    .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
-    .scroll-hint {
-      position: absolute; bottom: 48px; left: 40px; display: flex; align-items: center; gap: 12px;
-      font-size: 0.78rem; color: var(--muted); letter-spacing: 0.08em; opacity: 0; animation: fadeUp 0.6s 0.7s forwards;
-    }
-    .scroll-hint::before { content: ''; display: block; width: 40px; height: 1px; background: var(--muted); }
+    /* ── GAMES ── */
+    #games { padding:100px 40px; background:var(--surface); border-top:1px solid var(--border); }
+    .section-header { display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:56px; flex-wrap:wrap; gap:16px; }
+    .section-label { font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.14em; color:var(--accent); text-transform:uppercase; margin-bottom:10px; }
+    .section-title { font-family:'Syne',sans-serif; font-size:clamp(1.8rem,3.5vw,2.8rem); font-weight:800; letter-spacing:-0.03em; line-height:1.1; }
+    .section-count { font-family:'Syne',sans-serif; font-size:0.82rem; color:var(--muted); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; }
+    .game-card { background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:28px 24px; position:relative; cursor:pointer; transition:transform 0.25s,border-color 0.25s,box-shadow 0.25s; overflow:hidden; display:flex; flex-direction:column; gap:14px; }
+    .game-card::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(200,255,87,0.05) 0%,transparent 60%); opacity:0; transition:opacity 0.3s; }
+    .game-card:hover { transform:translateY(-5px); border-color:rgba(200,255,87,0.4); box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 0 1px rgba(200,255,87,0.1); }
+    .game-card:hover::before { opacity:1; }
+    .card-icon { width:48px; height:48px; border-radius:10px; background:var(--border); display:flex; align-items:center; justify-content:center; font-size:1.5rem; transition:transform 0.3s; }
+    .game-card:hover .card-icon { transform:scale(1.1) rotate(-4deg); }
+    .card-genre { font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); }
+    .card-title { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; letter-spacing:-0.01em; line-height:1.3; }
+    .card-desc { font-size:0.82rem; color:var(--muted); line-height:1.6; flex:1; }
+    .card-footer { display:flex; align-items:center; justify-content:space-between; margin-top:8px; padding-top:16px; border-top:1px solid var(--border); }
+    .card-rating { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; color:var(--accent); }
+    .card-play { font-size:0.72rem; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; display:flex; align-items:center; gap:6px; transition:color 0.2s; }
+    .game-card:hover .card-play { color:var(--accent); }
+    .card-play svg { transition:transform 0.2s; }
+    .game-card:hover .card-play svg { transform:translateX(3px); }
+    .game-card.playable { border-color:rgba(200,255,87,0.25); }
+    .playable-badge { position:absolute; top:14px; right:14px; font-family:'Syne',sans-serif; font-size:0.6rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; background:var(--accent); color:#0a0a0f; padding:3px 8px; border-radius:4px; }
+    footer { padding:32px 40px; background:var(--bg); border-top:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; font-size:0.78rem; color:var(--muted); }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
 
-    /* ── GAMES SECTION ───────────────────────────── */
-    #games { padding: 100px 40px; background: var(--surface); border-top: 1px solid var(--border); }
-    .section-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 56px; flex-wrap: wrap; gap: 16px; }
-    .section-label { font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.14em; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; }
-    .section-title { font-family: 'Syne', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
-    .section-count { font-family: 'Syne', sans-serif; font-size: 0.82rem; color: var(--muted); }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    /* ════════════════════════════════════════════════════════
+       ROAD KILL — FULL GAME PAGE
+    ════════════════════════════════════════════════════════ */
+    #page-roadkill { background:#0a0a0f; }
 
-    .game-card {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
-      padding: 28px 24px; position: relative; cursor: pointer;
-      transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
-      overflow: hidden; display: flex; flex-direction: column; gap: 14px;
-    }
-    .game-card::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(200,255,87,0.05) 0%, transparent 60%);
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .game-card:hover { transform: translateY(-5px); border-color: rgba(200,255,87,0.4); box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px rgba(200,255,87,0.1); }
-    .game-card:hover::before { opacity: 1; }
-    .card-icon { width: 48px; height: 48px; border-radius: 10px; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: transform 0.3s; }
-    .game-card:hover .card-icon { transform: scale(1.1) rotate(-4deg); }
-    .card-genre { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-    .card-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
-    .card-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; flex: 1; }
-    .card-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; padding-top: 16px; border-top: 1px solid var(--border); }
-    .card-rating { font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--accent); }
-    .card-play { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; display: flex; align-items: center; gap: 6px; transition: color 0.2s; }
-    .game-card:hover .card-play { color: var(--accent); }
-    .card-play svg { transition: transform 0.2s; }
-    .game-card:hover .card-play svg { transform: translateX(3px); }
-
-    .game-card.playable { border-color: rgba(200,255,87,0.25); }
-    .playable-badge {
-      position: absolute; top: 14px; right: 14px;
-      font-family: 'Syne', sans-serif; font-size: 0.6rem; font-weight: 700;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      background: var(--accent); color: #0a0a0f; padding: 3px 8px; border-radius: 4px;
+    /* ── GAME WRAPPER ── */
+    #rk-wrap {
+      flex:1; display:flex; align-items:center; justify-content:center;
+      padding:24px; position:relative;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 1px,
+        transparent 1px, transparent 80px
+      );
     }
 
-    footer {
-      padding: 32px 40px; background: var(--bg); border-top: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      font-size: 0.78rem; color: var(--muted);
+    /* All screens inside the game share this container */
+    #rk-screen {
+      width:100%; max-width:900px;
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:20px; overflow:hidden;
+      box-shadow:0 40px 80px rgba(0,0,0,0.6);
+      position:relative;
     }
 
-    /* ══════════════════════════════════════════════
-       MONOLITH GAME PAGE
-    ══════════════════════════════════════════════ */
-    .game-page-header {
-      padding: 56px 40px 40px; border-bottom: 1px solid var(--border);
-      background: var(--surface); position: relative; overflow: hidden;
+    /* ══ START SCREEN ══ */
+    #screen-start {
+      padding:60px 48px;
+      display:flex; flex-direction:column; align-items:center; text-align:center; gap:36px;
     }
-    .game-page-header::before {
-      content: ''; position: absolute; inset: 0;
-      background-image: linear-gradient(rgba(200,255,87,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(200,255,87,0.03) 1px, transparent 1px);
-      background-size: 40px 40px; pointer-events: none;
+    .rk-logo {
+      font-family:'Syne',sans-serif; font-size:clamp(3rem,6vw,5rem); font-weight:800;
+      letter-spacing:-0.04em; line-height:1;
     }
-    .game-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-    .game-meta-badge { font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border: 1px solid var(--border); color: var(--muted); padding: 4px 10px; border-radius: 4px; }
-    .game-page-title { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 16px; }
-    .game-page-title em { font-style: normal; color: var(--accent); }
-    .game-page-desc { font-size: 1rem; color: var(--muted); line-height: 1.7; max-width: 520px; }
+    .rk-logo .road { color:var(--text); }
+    .rk-logo .kill { color:#ff4444; text-shadow:0 0 30px rgba(255,68,68,0.6); }
+    .rk-tagline { font-size:0.9rem; color:var(--muted); letter-spacing:0.08em; text-transform:uppercase; }
 
-    .game-arena { flex: 1; padding: 48px 40px; display: flex; gap: 48px; align-items: flex-start; flex-wrap: wrap; }
-
-    /* ── BOARD ───────────────────────────────────── */
-    .puzzle-wrapper { flex: 0 0 auto; }
-    .puzzle-status {
-      font-family: 'Syne', sans-serif; font-size: 0.72rem; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-      margin-bottom: 20px; display: flex; align-items: center; gap: 16px;
+    .rk-controls-grid {
+      display:grid; grid-template-columns:1fr 1fr; gap:16px; width:100%; max-width:560px;
     }
-    .puzzle-status .level-tag { color: var(--accent); background: rgba(200,255,87,0.1); padding: 4px 10px; border-radius: 4px; }
-
-    #puzzle-board { display: grid; gap: 6px; user-select: none; }
-
-    .cell {
-      width: 68px; height: 68px; border-radius: 8px;
-      border: 2px solid var(--border); background: var(--card-bg);
-      cursor: pointer; position: relative;
-      transition: background 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.15s;
+    .rk-player-controls {
+      background:var(--card-bg); border:1px solid var(--border); border-radius:12px; padding:20px;
     }
-    .cell.on { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 16px rgba(200,255,87,0.5), 0 0 4px rgba(200,255,87,0.8); }
-    .cell:hover { transform: scale(0.94); }
-    .cell.flash { animation: cellFlash 0.25s ease; }
-
-    /* ── WIN OVERLAY ─────────────────────────────── */
-    .win-overlay {
-      display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(10,10,15,0.92); align-items: center; justify-content: center;
-      flex-direction: column; gap: 24px; backdrop-filter: blur(8px);
+    .rk-player-controls.p1 { border-color:rgba(200,255,87,0.3); }
+    .rk-player-controls.p2 { border-color:rgba(87,200,255,0.3); }
+    .rk-player-label {
+      font-family:'Syne',sans-serif; font-size:0.7rem; font-weight:700;
+      letter-spacing:0.12em; text-transform:uppercase; margin-bottom:12px;
     }
-    .win-overlay.show { display: flex; }
-    .win-icon { font-size: 4rem; animation: popIn 0.4s ease; }
-    .win-title { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; color: var(--accent); animation: popIn 0.4s 0.1s both; }
-    .win-sub { color: var(--muted); font-size: 0.95rem; animation: fadeUp 0.4s 0.2s both; }
-    .win-actions { display: flex; gap: 12px; animation: fadeUp 0.4s 0.3s both; }
-    .btn-next { padding: 12px 28px; background: var(--accent); color: #0a0a0f; font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; border: none; border-radius: 8px; cursor: pointer; letter-spacing: 0.03em; transition: transform 0.2s, box-shadow 0.2s; }
-    .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(200,255,87,0.35); }
-    .btn-retry { padding: 12px 28px; background: transparent; color: var(--muted); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.9rem; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: background 0.2s, color 0.2s; }
-    .btn-retry:hover { background: var(--border); color: var(--text); }
-
-    /* ── SIDEBAR ─────────────────────────────────── */
-    .game-sidebar { flex: 1; min-width: 240px; padding-top: 44px; }
-    .sidebar-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
-    .sidebar-heading { font-family: 'Syne', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
-    .moves-display { font-family: 'Syne', sans-serif; font-size: 3rem; font-weight: 800; letter-spacing: -0.04em; color: var(--text); line-height: 1; }
-    .moves-label { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
-
-    .level-dots { display: flex; gap: 8px; flex-wrap: wrap; }
-    .level-dot {
-      width: 28px; height: 28px; border-radius: 6px; background: var(--border); border: 1px solid var(--border);
-      cursor: pointer; font-family: 'Syne', sans-serif; font-size: 0.65rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center; color: var(--muted);
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    .rk-player-controls.p1 .rk-player-label { color:var(--accent); }
+    .rk-player-controls.p2 .rk-player-label { color:var(--accent2); }
+    .rk-key-row { display:flex; gap:8px; align-items:center; margin-bottom:8px; font-size:0.82rem; color:var(--muted); }
+    .key {
+      display:inline-flex; align-items:center; justify-content:center;
+      min-width:28px; height:28px; padding:0 6px;
+      background:var(--bg); border:1px solid var(--border);
+      border-radius:5px; border-bottom:3px solid rgba(0,0,0,0.4);
+      font-family:'Syne',sans-serif; font-size:0.75rem; font-weight:700; color:var(--text);
     }
-    .level-dot.current { background: var(--accent); color: #0a0a0f; border-color: var(--accent); }
-    .level-dot.done { background: rgba(200,255,87,0.15); color: var(--accent); border-color: rgba(200,255,87,0.3); }
-    .level-dot:hover:not(.current) { border-color: var(--accent); color: var(--accent); }
 
-    .rules-list { display: flex; flex-direction: column; gap: 12px; }
-    .rule-item { display: flex; align-items: flex-start; gap: 10px; }
-    .rule-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-top: 6px; flex-shrink: 0; }
-    .rule-text { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+    .rk-rules { font-size:0.82rem; color:var(--muted); line-height:1.7; max-width:480px; }
+    .rk-rules strong { color:var(--text); }
 
-    .btn-reset { width: 100%; padding: 12px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; font-family: 'Syne', sans-serif; font-size: 0.8rem; font-weight: 600; cursor: pointer; letter-spacing: 0.05em; text-transform: uppercase; transition: background 0.2s, color 0.2s; }
-    .btn-reset:hover { background: var(--border); color: var(--text); }
+    .btn-start-game {
+      padding:16px 48px; background:var(--accent); color:#0a0a0f;
+      font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem;
+      letter-spacing:0.04em; border:none; border-radius:10px; cursor:pointer;
+      transition:transform 0.2s, box-shadow 0.2s;
+      box-shadow:0 0 30px rgba(200,255,87,0.3);
+    }
+    .btn-start-game:hover { transform:translateY(-3px); box-shadow:0 8px 40px rgba(200,255,87,0.5); }
 
-    /* ── ANIMATIONS ──────────────────────────────── */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-    @keyframes cellFlash { 0%{ transform: scale(0.88); } 60%{ transform: scale(1.06); } 100%{ transform: scale(1); } }
-    @keyframes popIn { 0%{ opacity:0; transform: scale(0.6); } 70%{ transform: scale(1.1); } 100%{ opacity:1; transform: scale(1); } }
+    /* ══ COLOR PICK SCREEN ══ */
+    #screen-colorpick {
+      padding:52px 48px;
+      display:flex; flex-direction:column; align-items:center; text-align:center; gap:32px;
+    }
+    #screen-colorpick h2 {
+      font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; letter-spacing:-0.02em;
+    }
+    .color-pick-players { display:flex; gap:40px; justify-content:center; flex-wrap:wrap; }
+    .color-pick-player { display:flex; flex-direction:column; align-items:center; gap:16px; }
+    .color-pick-label {
+      font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:700;
+      letter-spacing:0.12em; text-transform:uppercase;
+    }
+    .color-pick-label.p1 { color:var(--accent); }
+    .color-pick-label.p2 { color:var(--accent2); }
 
-    @media (max-width: 640px) {
-      header { padding: 0 20px; }
-      .hero { padding: 80px 20px 60px; min-height: 800px; }
-      .hero-stats { gap: 28px; flex-wrap: wrap; }
-      #games { padding: 64px 20px; }
-      footer { flex-direction: column; gap: 8px; text-align: center; }
-      .game-page-header { padding: 40px 20px 28px; }
-      .game-arena { padding: 32px 20px; gap: 32px; }
-      .cell { width: 54px; height: 54px; }
+    .car-preview { width:50px; height:90px; border-radius:8px 8px 4px 4px; position:relative; transition:background 0.2s; margin-bottom:4px; }
+    .car-preview::before { content:''; position:absolute; top:8px; left:4px; right:4px; height:28px; background:rgba(0,0,0,0.35); border-radius:4px; }
+    .car-preview::after { content:''; position:absolute; bottom:-6px; left:6px; right:6px; height:8px; background:rgba(0,0,0,0.4); border-radius:0 0 4px 4px; }
+
+    .color-swatches { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; max-width:200px; }
+    .swatch {
+      width:32px; height:32px; border-radius:8px; cursor:pointer;
+      border:3px solid transparent; transition:transform 0.15s, border-color 0.15s;
+    }
+    .swatch:hover { transform:scale(1.15); }
+    .swatch.selected { border-color:white; transform:scale(1.2); }
+
+    .btn-begin-race {
+      padding:14px 40px; background:var(--accent); color:#0a0a0f;
+      font-family:'Syne',sans-serif; font-weight:800; font-size:1rem;
+      letter-spacing:0.04em; border:none; border-radius:10px; cursor:pointer;
+      transition:transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+    }
+    .btn-begin-race:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 6px 30px rgba(200,255,87,0.4); }
+    .btn-begin-race:disabled { opacity:0.4; cursor:not-allowed; }
+
+    /* ══ COUNTDOWN SCREEN ══ */
+    #screen-countdown {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      gap:12px; padding:80px 48px; text-align:center;
+    }
+    .countdown-num {
+      font-family:'Syne',sans-serif; font-size:9rem; font-weight:800; line-height:1;
+      color:var(--accent); letter-spacing:-0.05em;
+      animation:countPop 0.6s ease;
+    }
+    .countdown-num.go { color:#ff4444; font-size:8rem; text-shadow:0 0 40px rgba(255,68,68,0.7); }
+    .countdown-sub { font-family:'Syne',sans-serif; font-size:0.8rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); }
+    @keyframes countPop { 0%{transform:scale(1.8);opacity:0} 60%{transform:scale(0.95)} 100%{transform:scale(1);opacity:1} }
+
+    /* ══ GAME CANVAS SCREEN ══ */
+    #screen-game { position:relative; line-height:0; }
+    #rk-canvas { display:block; width:100%; height:auto; }
+
+    /* ══ RESULT SCREEN ══ */
+    #screen-result {
+      padding:60px 48px;
+      display:flex; flex-direction:column; align-items:center; text-align:center; gap:28px;
+    }
+    .result-label { font-family:'Syne',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); }
+    .result-winner { font-family:'Syne',sans-serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:800; letter-spacing:-0.03em; line-height:1.1; }
+    .result-crash { font-size:4rem; }
+    .result-stats { display:flex; gap:40px; justify-content:center; flex-wrap:wrap; }
+    .result-stat { display:flex; flex-direction:column; align-items:center; gap:4px; }
+    .result-stat-val { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; }
+    .result-stat-lbl { font-size:0.72rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; }
+    .result-actions { display:flex; gap:12px; }
+    .btn-play-again { padding:13px 32px; background:var(--accent); color:#0a0a0f; font-family:'Syne',sans-serif; font-weight:800; font-size:0.9rem; border:none; border-radius:8px; cursor:pointer; transition:transform 0.2s,box-shadow 0.2s; }
+    .btn-play-again:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(200,255,87,0.4); }
+    .btn-back-home-result { padding:13px 32px; background:transparent; color:var(--muted); font-family:'Syne',sans-serif; font-weight:600; font-size:0.9rem; border:1px solid var(--border); border-radius:8px; cursor:pointer; transition:background 0.2s,color 0.2s; }
+    .btn-back-home-result:hover { background:var(--border); color:var(--text); }
+
+    /* ── HUD overlay on canvas ── */
+    #rk-hud {
+      position:absolute; top:0; left:0; right:0;
+      display:flex; justify-content:space-between; align-items:flex-start;
+      padding:14px 18px; pointer-events:none;
+    }
+    .hud-player { font-family:'Syne',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; }
+    .hud-player.p1 { color:var(--accent); }
+    .hud-player.p2 { color:var(--accent2); }
+    .hud-center { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; color:var(--text); letter-spacing:0.08em; text-align:center; }
+
+    @media(max-width:640px){
+      header{padding:0 20px;}
+      .hero{padding:80px 20px 60px;min-height:800px;}
+      .hero-stats{gap:28px;flex-wrap:wrap;}
+      #games{padding:64px 20px;}
+      footer{flex-direction:column;gap:8px;text-align:center;}
+      #screen-start,#screen-colorpick,#screen-result{padding:36px 20px;}
+      .rk-controls-grid{grid-template-columns:1fr;}
+      .color-pick-players{flex-direction:column;align-items:center;}
     }
   </style>
 </head>
 <body>
 
-<!-- STICKY HEADER -->
 <header>
   <div class="nav-logo" id="logo-home"><span></span>GameHub</div>
   <button class="nav-btn" id="nav-action-btn">
@@ -270,12 +251,12 @@
   </button>
 </header>
 
-<!-- ══════════════════ HOME PAGE ══════════════════ -->
+<!-- ════ HOME PAGE ════ -->
 <div id="page-home" class="page active">
   <section class="hero">
     <p class="hero-eyebrow">Curated · Independent · Always Free</p>
     <h1 class="hero-title">Your gateway to<br/><em>extraordinary</em><br/>games.</h1>
-    <p class="hero-description">A hand-picked collection of the world's best games — from sprawling open worlds to sharp, minimal puzzlers. No ads. No noise. Just play.</p>
+    <p class="hero-description">A hand-picked collection of the world's best games — from sprawling open worlds to couch-multiplayer chaos. No ads. No noise. Just play.</p>
     <div class="hero-stats">
       <div class="stat-item"><span class="stat-num">120+</span><span class="stat-label">Games Listed</span></div>
       <div class="stat-item"><span class="stat-num">18</span><span class="stat-label">Genres</span></div>
@@ -286,23 +267,20 @@
 
   <section id="games">
     <div class="section-header">
-      <div>
-        <p class="section-label">Game Library</p>
-        <h2 class="section-title">Browse the<br/>collection</h2>
-      </div>
+      <div><p class="section-label">Game Library</p><h2 class="section-title">Browse the<br/>collection</h2></div>
       <span class="section-count">Showing 6 of 120</span>
     </div>
     <div class="grid">
 
-      <!-- MONOLITH — fully playable -->
-      <article class="game-card playable" id="card-monolith">
+      <!-- ROAD KILL — playable -->
+      <article class="game-card playable" id="card-roadkill">
         <div class="playable-badge">▶ Playable</div>
-        <div class="card-icon">🧩</div>
-        <span class="card-genre">Puzzle · Minimal</span>
-        <h3 class="card-title">Monolith</h3>
-        <p class="card-desc">Ninety levels of pure spatial logic. No tutorial, no hand-holding — just you and the grid.</p>
+        <div class="card-icon">🚗</div>
+        <span class="card-genre">Couch Multiplayer · Racing</span>
+        <h3 class="card-title">Road Kill</h3>
+        <p class="card-desc">Two players, one road, zero mercy. Dodge the traffic or watch your friend survive longer than you. It gets ugly fast.</p>
         <div class="card-footer">
-          <span class="card-rating">★ 9.2</span>
+          <span class="card-rating">★ 9.5</span>
           <span class="card-play">Play now <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </div>
       </article>
@@ -315,10 +293,10 @@
       </article>
 
       <article class="game-card">
-        <div class="card-icon">⚔️</div><span class="card-genre">Action · Roguelike</span>
-        <h3 class="card-title">Ironveil</h3>
-        <p class="card-desc">A punishing dungeon crawler with a procedurally generated world that never repeats itself.</p>
-        <div class="card-footer"><span class="card-rating">★ 9.4</span><span class="card-play">Coming soon <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
+        <div class="card-icon">🧩</div><span class="card-genre">Puzzle · Minimal</span>
+        <h3 class="card-title">Monolith</h3>
+        <p class="card-desc">Ninety levels of pure spatial logic. No tutorial, no hand-holding — just you and the grid.</p>
+        <div class="card-footer"><span class="card-rating">★ 9.2</span><span class="card-play">Coming soon <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></div>
       </article>
 
       <article class="game-card">
@@ -344,198 +322,558 @@
 
     </div>
   </section>
-
   <footer>
     <span>© 2026 GameHub. Built with care.</span>
     <span>All ratings are community-sourced.</span>
   </footer>
 </div>
 
-<!-- ══════════════════ MONOLITH GAME PAGE ══════════════════ -->
-<div id="page-monolith" class="page">
-  <div class="game-page-header">
-    <div class="game-meta">
-      <span class="game-meta-badge">Puzzle</span>
-      <span class="game-meta-badge">Minimal</span>
-      <span class="game-meta-badge">★ 9.2</span>
-    </div>
-    <h1 class="game-page-title"><em>Mono</em>lith</h1>
-    <p class="game-page-desc">Click any glowing cell to toggle it and its neighbours. Extinguish every light to clear the level. Simple rules. Ruthless depth.</p>
-  </div>
+<!-- ════ ROAD KILL GAME PAGE ════ -->
+<div id="page-roadkill" class="page">
+  <div id="rk-wrap">
+    <div id="rk-screen">
 
-  <div class="game-arena">
-    <div class="puzzle-wrapper">
-      <div class="puzzle-status">
-        <span class="level-tag" id="level-label">Level 1</span>
-        <span id="moves-inline">0 moves</span>
-      </div>
-      <div id="puzzle-board"></div>
-    </div>
+      <!-- START SCREEN -->
+      <div id="screen-start">
+        <div>
+          <div class="rk-logo"><span class="road">ROAD</span> <span class="kill">KILL</span></div>
+          <div class="rk-tagline">2-player couch survival · same keyboard</div>
+        </div>
 
-    <div class="game-sidebar">
-      <div class="sidebar-card">
-        <p class="sidebar-heading">Moves</p>
-        <div class="moves-display" id="moves-counter">0</div>
-        <div class="moves-label">taps this level</div>
+        <div class="rk-controls-grid">
+          <div class="rk-player-controls p1">
+            <div class="rk-player-label">Player 1</div>
+            <div class="rk-key-row"><span class="key">A</span><span class="key">D</span><span style="margin-left:4px">Move left / right</span></div>
+            <div class="rk-key-row"><span class="key">W</span><span class="key">S</span><span style="margin-left:4px">Speed up / slow</span></div>
+          </div>
+          <div class="rk-player-controls p2">
+            <div class="rk-player-label">Player 2</div>
+            <div class="rk-key-row"><span class="key">◀</span><span class="key">▶</span><span style="margin-left:4px">Move left / right</span></div>
+            <div class="rk-key-row"><span class="key">▲</span><span class="key">▼</span><span style="margin-left:4px">Speed up / slow</span></div>
+          </div>
+        </div>
+
+        <div class="rk-rules">
+          <strong>Dodge. Weave. Survive.</strong><br/>
+          Both players share a road packed with oncoming traffic. Stay in your lane or steal theirs — just don't hit anything.
+          Traffic gets faster every 10 seconds. The last player standing wins. Crashes are instant.
+        </div>
+
+        <button class="btn-start-game" id="btn-to-colorpick">Choose Your Cars →</button>
       </div>
-      <div class="sidebar-card">
-        <p class="sidebar-heading">Levels</p>
-        <div class="level-dots" id="level-dots"></div>
+
+      <!-- COLOR PICK SCREEN -->
+      <div id="screen-colorpick" style="display:none">
+        <h2>Pick Your Car</h2>
+        <div class="color-pick-players">
+          <div class="color-pick-player">
+            <div class="color-pick-label p1">Player 1</div>
+            <div class="car-preview" id="preview-p1" style="background:#c8ff57"></div>
+            <div class="color-swatches" id="swatches-p1"></div>
+          </div>
+          <div class="color-pick-player">
+            <div class="color-pick-label p2">Player 2</div>
+            <div class="car-preview" id="preview-p2" style="background:#57c8ff"></div>
+            <div class="color-swatches" id="swatches-p2"></div>
+          </div>
+        </div>
+        <button class="btn-begin-race" id="btn-begin-race">Start Race →</button>
       </div>
-      <div class="sidebar-card">
-        <p class="sidebar-heading">How to play</p>
-        <div class="rules-list">
-          <div class="rule-item"><div class="rule-dot"></div><p class="rule-text">Tap a cell to toggle it <em>and</em> all 4 adjacent neighbours.</p></div>
-          <div class="rule-item"><div class="rule-dot"></div><p class="rule-text">Goal: turn every <span style="color:var(--accent)">glowing cell</span> off.</p></div>
-          <div class="rule-item"><div class="rule-dot"></div><p class="rule-text">Fewer moves = higher mastery. Find the optimal path.</p></div>
+
+      <!-- COUNTDOWN SCREEN -->
+      <div id="screen-countdown" style="display:none">
+        <div class="countdown-num" id="cd-num">3</div>
+        <div class="countdown-sub">get ready…</div>
+      </div>
+
+      <!-- GAME SCREEN -->
+      <div id="screen-game" style="display:none">
+        <canvas id="rk-canvas" width="880" height="540"></canvas>
+        <div id="rk-hud">
+          <div class="hud-player p1" id="hud-p1">P1 ● ALIVE</div>
+          <div class="hud-center" id="hud-speed">Speed ×1.0</div>
+          <div class="hud-player p2" id="hud-p2">ALIVE ● P2</div>
         </div>
       </div>
-      <button class="btn-reset" id="btn-reset">↺ &nbsp; Reset Level</button>
-    </div>
-  </div>
-</div>
 
-<!-- WIN OVERLAY -->
-<div class="win-overlay" id="win-overlay">
-  <div class="win-icon">✦</div>
-  <div class="win-title">Level Clear</div>
-  <p class="win-sub" id="win-sub-text">Solved in 0 moves</p>
-  <div class="win-actions">
-    <button class="btn-next" id="btn-next-level">Next Level →</button>
-    <button class="btn-retry" id="btn-retry">Retry</button>
-  </div>
-</div>
+      <!-- RESULT SCREEN -->
+      <div id="screen-result" style="display:none">
+        <div class="result-crash" id="result-crash">💥</div>
+        <div class="result-label">Winner</div>
+        <div class="result-winner" id="result-winner">Player 1 Wins!</div>
+        <div class="result-stats">
+          <div class="result-stat">
+            <div class="result-stat-val" id="res-time">0s</div>
+            <div class="result-stat-lbl">Survived</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-val" id="res-speed">×1.0</div>
+            <div class="result-stat-lbl">Max Speed</div>
+          </div>
+          <div class="result-stat">
+            <div class="result-stat-val" id="res-dodged">0</div>
+            <div class="result-stat-lbl">Cars Dodged</div>
+          </div>
+        </div>
+        <div class="result-actions">
+          <button class="btn-play-again" id="btn-play-again">Play Again</button>
+          <button class="btn-back-home-result" id="btn-result-home">Back to Hub</button>
+        </div>
+      </div>
+
+    </div><!-- /#rk-screen -->
+  </div><!-- /#rk-wrap -->
+</div><!-- /#page-roadkill -->
+
 
 <script>
-/* ── ROUTING ─────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   ROUTING
+══════════════════════════════════════════════════════════ */
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
+  window.scrollTo(0,0);
   const isGame = id !== 'page-home';
   const btn = document.getElementById('nav-action-btn');
-  btn.innerHTML = isGame
-    ? '← Back'
+  btn.innerHTML = isGame ? '← Back'
     : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg> Games`;
   btn.classList.toggle('back-btn', isGame);
 }
-
-document.getElementById('logo-home').addEventListener('click', () => showPage('page-home'));
-
+document.getElementById('logo-home').addEventListener('click', () => { stopGame(); showPage('page-home'); });
 document.getElementById('nav-action-btn').addEventListener('click', () => {
-  if (document.getElementById('nav-action-btn').classList.contains('back-btn')) {
-    showPage('page-home');
-  } else {
-    showPage('page-home');
-    setTimeout(() => document.getElementById('games').scrollIntoView({ behavior: 'smooth' }), 50);
-  }
+  if (document.getElementById('nav-action-btn').classList.contains('back-btn')) { stopGame(); showPage('page-home'); }
+  else { showPage('page-home'); setTimeout(()=>document.getElementById('games').scrollIntoView({behavior:'smooth'}),50); }
 });
+document.getElementById('card-roadkill').addEventListener('click', () => { showPage('page-roadkill'); showScreen('start'); });
 
-document.getElementById('card-monolith').addEventListener('click', () => {
-  showPage('page-monolith');
-  loadLevel(currentLevel);
-});
+// Card animations
+const cards = document.querySelectorAll('.game-card');
+const cardObs = new IntersectionObserver(entries=>{
+  entries.forEach((e,i)=>{ if(e.isIntersecting){e.target.style.animation=`fadeUp 0.5s ${i*0.07}s both`;cardObs.unobserve(e.target);} });
+},{threshold:0.1});
+cards.forEach(c=>{c.style.opacity='0';cardObs.observe(c);});
 
-/* ── LIGHTS-OUT ENGINE ───────────────────────────────────── */
-const LEVELS = [
-  [[0,0,1,0,0],[0,1,1,1,0],[1,1,0,1,1],[0,1,1,1,0],[0,0,1,0,0]],   // 1 – cross
-  [[1,0,0,0,1],[0,1,0,1,0],[0,0,1,0,0],[0,1,0,1,0],[1,0,0,0,1]],   // 2 – X
-  [[1,0,1,0,1],[0,0,0,0,0],[1,0,1,0,1],[0,0,0,0,0],[1,0,1,0,1]],   // 3 – sparse checker
-  [[1,1,1,1,1],[1,0,0,0,1],[1,0,0,0,1],[1,0,0,0,1],[1,1,1,1,1]],   // 4 – ring
-  [[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1],[1,1,1,1,1]],   // 5 – full
+/* ══════════════════════════════════════════════════════════
+   ROAD KILL — GAME ENGINE
+══════════════════════════════════════════════════════════ */
+const COLORS = [
+  '#c8ff57','#57c8ff','#ff5757','#ff9f43','#a29bfe',
+  '#fd79a8','#00cec9','#fdcb6e','#ffffff','#e17055'
 ];
 
-let currentLevel = 0;
-let state = [];
-let moves = 0;
-let completedLevels = new Set();
+let p1Color = '#c8ff57';
+let p2Color = '#57c8ff';
 
-function deepCopy(g) { return g.map(r => [...r]); }
-
-function loadLevel(idx) {
-  currentLevel = idx;
-  state = deepCopy(LEVELS[idx]);
-  moves = 0;
-  updateMoves();
-  renderBoard();
-  updateLevelDots();
-  document.getElementById('level-label').textContent = `Level ${idx + 1}`;
-  document.getElementById('win-overlay').classList.remove('show');
+function showScreen(name) {
+  ['start','colorpick','countdown','game','result'].forEach(s=>{
+    document.getElementById('screen-'+s).style.display = s===name ? '' : 'none';
+  });
+  if(name==='start') document.getElementById('screen-start').style.display='flex';
+  if(name==='colorpick') document.getElementById('screen-colorpick').style.display='flex';
+  if(name==='countdown') document.getElementById('screen-countdown').style.display='flex';
+  if(name==='result') document.getElementById('screen-result').style.display='flex';
+  if(name==='game') document.getElementById('screen-game').style.display='';
 }
 
-function toggle(r, c) {
-  const s = state.length;
-  [[r,c],[r-1,c],[r+1,c],[r,c-1],[r,c+1]].forEach(([nr,nc]) => {
-    if (nr >= 0 && nr < s && nc >= 0 && nc < s) state[nr][nc] ^= 1;
+/* ── COLOR PICK ── */
+function buildSwatches() {
+  ['p1','p2'].forEach(pid=>{
+    const container = document.getElementById('swatches-'+pid);
+    container.innerHTML='';
+    COLORS.forEach(col=>{
+      const sw = document.createElement('div');
+      sw.className='swatch' + ((pid==='p1'?p1Color:p2Color)===col?' selected':'');
+      sw.style.background=col;
+      sw.addEventListener('click',()=>{
+        if(pid==='p1') p1Color=col; else p2Color=col;
+        document.getElementById('preview-'+pid).style.background=col;
+        buildSwatches();
+        updateBeginBtn();
+      });
+      container.appendChild(sw);
+    });
+  });
+}
+function updateBeginBtn() {
+  document.getElementById('btn-begin-race').disabled = p1Color===p2Color;
+}
+document.getElementById('btn-to-colorpick').addEventListener('click',()=>{
+  showScreen('colorpick'); buildSwatches(); updateBeginBtn();
+});
+document.getElementById('btn-begin-race').addEventListener('click',()=>{ startCountdown(); });
+
+/* ── COUNTDOWN ── */
+function startCountdown() {
+  showScreen('countdown');
+  const el = document.getElementById('cd-num');
+  let n=3;
+  el.textContent=n; el.className='countdown-num';
+  const iv = setInterval(()=>{
+    n--;
+    if(n>0){ el.textContent=n; el.className='countdown-num'; void el.offsetWidth; el.className='countdown-num'; }
+    else if(n===0){ el.textContent='GO!'; el.className='countdown-num go'; }
+    else { clearInterval(iv); startGame(); }
+  },1000);
+}
+
+/* ══════════════════════════════════════════════════════════
+   GAME CORE
+══════════════════════════════════════════════════════════ */
+const canvas = document.getElementById('rk-canvas');
+const ctx    = canvas.getContext('2d');
+const W = canvas.width, H = canvas.height;
+
+// Road geometry
+const ROAD_X   = 120;
+const ROAD_W   = W - 240;
+const LANE_W   = ROAD_W / 4;          // 4 lanes
+const LANES    = [0,1,2,3].map(i => ROAD_X + LANE_W*i + LANE_W/2);
+
+// Players occupy left half (lanes 0-1) and right half (lanes 2-3) loosely
+// but can move anywhere — adds chaos
+const CAR_W = 36, CAR_H = 64;
+
+let state = {};
+let animId = null;
+let keys = {};
+
+function initState() {
+  state = {
+    p1: { x: LANES[1], y: H-100, alive:true, color:p1Color, speed:0 },
+    p2: { x: LANES[2], y: H-100, alive:true, color:p2Color, speed:0 },
+    traffic: [],
+    tick: 0,
+    elapsed: 0,
+    lastTime: null,
+    speedMult: 1,
+    dodged: 0,
+    nextSpawn: 60,
+    roadOffset: 0,
+    markOffset: 0,
+    crashed: null   // 'p1' | 'p2' | 'both'
+  };
+}
+
+/* ── INPUT ── */
+function onKeyDown(e) {
+  keys[e.code]=true;
+  // prevent arrow key scroll
+  if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
+}
+function onKeyUp(e) { keys[e.code]=false; }
+
+function startGame() {
+  initState();
+  showScreen('game');
+  document.addEventListener('keydown',onKeyDown);
+  document.addEventListener('keyup',onKeyUp);
+  animId = requestAnimationFrame(gameLoop);
+}
+
+function stopGame() {
+  if(animId){ cancelAnimationFrame(animId); animId=null; }
+  document.removeEventListener('keydown',onKeyDown);
+  document.removeEventListener('keyup',onKeyUp);
+}
+
+/* ── TRAFFIC SPAWNER ── */
+const TRAFFIC_COLORS = ['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#54a0ff','#5f27cd','#ee5a24','#009432'];
+function spawnCar() {
+  const lane = Math.floor(Math.random()*4);
+  state.traffic.push({
+    x: LANES[lane],
+    y: -80,
+    w: CAR_W-4, h: CAR_H,
+    color: TRAFFIC_COLORS[Math.floor(Math.random()*TRAFFIC_COLORS.length)],
+    speed: (2.5 + Math.random()*2) * state.speedMult,
+    counted: false
   });
 }
 
-function handleClick(r, c) {
-  toggle(r, c);
-  moves++;
-  updateMoves();
-  renderBoard();
-  const idx = r * state.length + c;
-  const cell = document.querySelectorAll('.cell')[idx];
-  cell.classList.remove('flash');
-  void cell.offsetWidth;
-  cell.classList.add('flash');
-  if (state.every(row => row.every(v => v === 0))) {
-    completedLevels.add(currentLevel);
-    updateLevelDots();
-    setTimeout(showWin, 320);
+/* ── COLLISION ── */
+function rectsOverlap(ax,ay,aw,ah, bx,by,bw,bh) {
+  return ax < bx+bw && ax+aw > bx && ay < by+bh && ay+ah > by;
+}
+function checkCollision(player) {
+  const px = player.x - CAR_W/2, py = player.y - CAR_H/2;
+  // off road
+  if(player.x - CAR_W/2 < ROAD_X || player.x + CAR_W/2 > ROAD_X+ROAD_W) return true;
+  // traffic
+  for(const t of state.traffic) {
+    if(rectsOverlap(px,py,CAR_W,CAR_H, t.x-t.w/2, t.y-t.h/2, t.w, t.h)) return true;
+  }
+  // player-player
+  return false;
+}
+
+/* ── GAME LOOP ── */
+function gameLoop(ts) {
+  if(!state.lastTime) state.lastTime = ts;
+  const dt = Math.min((ts - state.lastTime)/1000, 0.05);
+  state.lastTime = ts;
+  state.elapsed += dt;
+  state.tick++;
+
+  // Escalate speed every 8 seconds
+  state.speedMult = 1 + Math.floor(state.elapsed / 8) * 0.25;
+  document.getElementById('hud-speed').textContent = `Speed ×${state.speedMult.toFixed(1)}`;
+
+  // Player movement
+  const P1_SPEED = 4.5;
+  const P2_SPEED = 4.5;
+  if(state.p1.alive) {
+    if(keys['KeyA'])    state.p1.x -= P1_SPEED;
+    if(keys['KeyD'])    state.p1.x += P1_SPEED;
+    if(keys['KeyW'])    state.p1.y -= P1_SPEED*0.5;
+    if(keys['KeyS'])    state.p1.y += P1_SPEED*0.5;
+    state.p1.x = Math.max(ROAD_X+CAR_W/2, Math.min(ROAD_X+ROAD_W-CAR_W/2, state.p1.x));
+    state.p1.y = Math.max(CAR_H/2+20, Math.min(H-CAR_H/2-10, state.p1.y));
+  }
+  if(state.p2.alive) {
+    if(keys['ArrowLeft'])  state.p2.x -= P2_SPEED;
+    if(keys['ArrowRight']) state.p2.x += P2_SPEED;
+    if(keys['ArrowUp'])    state.p2.y -= P2_SPEED*0.5;
+    if(keys['ArrowDown'])  state.p2.y += P2_SPEED*0.5;
+    state.p2.x = Math.max(ROAD_X+CAR_W/2, Math.min(ROAD_X+ROAD_W-CAR_W/2, state.p2.x));
+    state.p2.y = Math.max(CAR_H/2+20, Math.min(H-CAR_H/2-10, state.p2.y));
+  }
+
+  // Player-player collision
+  if(state.p1.alive && state.p2.alive) {
+    if(rectsOverlap(
+      state.p1.x-CAR_W/2, state.p1.y-CAR_H/2, CAR_W, CAR_H,
+      state.p2.x-CAR_W/2, state.p2.y-CAR_H/2, CAR_W, CAR_H
+    )) { state.p1.alive=false; state.p2.alive=false; state.crashed='both'; }
+  }
+
+  // Spawn traffic
+  state.nextSpawn--;
+  if(state.nextSpawn<=0) {
+    // sometimes spawn 2 cars
+    spawnCar();
+    if(state.speedMult>1.5 && Math.random()<0.35) spawnCar();
+    state.nextSpawn = Math.max(18, 55 - Math.floor(state.elapsed/8)*5);
+  }
+
+  // Move traffic
+  const baseScroll = (2.5 + state.speedMult * 1.2);
+  state.roadOffset = (state.roadOffset + baseScroll) % 80;
+  state.markOffset = (state.markOffset + baseScroll) % 120;
+
+  for(let i=state.traffic.length-1;i>=0;i--) {
+    const t = state.traffic[i];
+    t.y += t.speed * state.speedMult * 0.8;
+    if(t.y > H+100) {
+      if(!t.counted){ state.dodged++; t.counted=true; }
+      state.traffic.splice(i,1);
+    }
+  }
+
+  // Collision detection for players
+  if(state.p1.alive && checkCollision(state.p1)) { state.p1.alive=false; if(!state.crashed) state.crashed='p1'; }
+  if(state.p2.alive && checkCollision(state.p2)) { state.p2.alive=false; if(!state.crashed) state.crashed=state.crashed==='p1'?'both':'p2'; }
+
+  // HUD
+  const p1txt = state.p1.alive ? 'P1 ● ALIVE' : 'P1 ✕ CRASH';
+  const p2txt = state.p2.alive ? 'ALIVE ● P2' : 'CRASH ✕ P2';
+  document.getElementById('hud-p1').textContent = p1txt;
+  document.getElementById('hud-p2').textContent = p2txt;
+  document.getElementById('hud-p1').style.opacity = state.p1.alive ? '1' : '0.4';
+  document.getElementById('hud-p2').style.opacity = state.p2.alive ? '1' : '0.4';
+
+  draw();
+
+  if(!state.p1.alive && !state.p2.alive) {
+    stopGame();
+    setTimeout(()=>showResult(), 800);
+    return;
+  }
+  if(!state.p1.alive || !state.p2.alive) {
+    // keep going until both crash
+  }
+
+  animId = requestAnimationFrame(gameLoop);
+}
+
+/* ── DRAW ── */
+function drawCar(x,y,color,alive) {
+  if(!alive){ // draw wreck
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.rotate(0.4);
+    ctx.globalAlpha=0.5;
+    ctx.fillStyle='#333';
+    ctx.fillRect(-CAR_W/2,-CAR_H/2,CAR_W,CAR_H);
+    ctx.restore();
+    return;
+  }
+  ctx.save();
+  ctx.translate(x,y);
+
+  // Shadow
+  ctx.fillStyle='rgba(0,0,0,0.3)';
+  ctx.beginPath(); ctx.ellipse(4,CAR_H/2+4,CAR_W/2,8,0,0,Math.PI*2); ctx.fill();
+
+  // Body
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.roundRect(-CAR_W/2,-CAR_H/2,CAR_W,CAR_H,6);
+  ctx.fill();
+
+  // Windshield
+  ctx.fillStyle='rgba(0,0,0,0.45)';
+  ctx.beginPath();
+  ctx.roundRect(-CAR_W/2+5,-CAR_H/2+8,CAR_W-10,20,3);
+  ctx.fill();
+
+  // Rear window
+  ctx.fillStyle='rgba(0,0,0,0.35)';
+  ctx.beginPath();
+  ctx.roundRect(-CAR_W/2+5,CAR_H/2-26,CAR_W-10,18,3);
+  ctx.fill();
+
+  // Headlights
+  ctx.fillStyle='#fffde7';
+  ctx.beginPath(); ctx.roundRect(-CAR_W/2+3,-CAR_H/2+2,10,6,2); ctx.fill();
+  ctx.beginPath(); ctx.roundRect(CAR_W/2-13,-CAR_H/2+2,10,6,2); ctx.fill();
+
+  // Taillights
+  ctx.fillStyle='#ff4444';
+  ctx.beginPath(); ctx.roundRect(-CAR_W/2+3,CAR_H/2-8,10,5,2); ctx.fill();
+  ctx.beginPath(); ctx.roundRect(CAR_W/2-13,CAR_H/2-8,10,5,2); ctx.fill();
+
+  // Centre stripe
+  ctx.fillStyle='rgba(0,0,0,0.15)';
+  ctx.fillRect(-2,-CAR_H/2+32,4,CAR_H-60);
+
+  ctx.restore();
+}
+
+function drawTrafficCar(t) {
+  ctx.save();
+  ctx.translate(t.x, t.y);
+
+  // Shadow
+  ctx.fillStyle='rgba(0,0,0,0.3)';
+  ctx.beginPath(); ctx.ellipse(3,t.h/2+4,t.w/2,7,0,0,Math.PI*2); ctx.fill();
+
+  // flip (coming toward player, so flip vertically)
+  ctx.scale(1,-1);
+
+  // Body
+  ctx.fillStyle=t.color;
+  ctx.beginPath();
+  ctx.roundRect(-t.w/2,-t.h/2,t.w,t.h,5);
+  ctx.fill();
+
+  // Windshield
+  ctx.fillStyle='rgba(0,0,0,0.4)';
+  ctx.beginPath();
+  ctx.roundRect(-t.w/2+4,-t.h/2+6,t.w-8,18,3);
+  ctx.fill();
+
+  // Headlights (facing player = at bottom after flip)
+  ctx.fillStyle='#fffde7';
+  ctx.beginPath(); ctx.roundRect(-t.w/2+3,-t.h/2+1,8,5,2); ctx.fill();
+  ctx.beginPath(); ctx.roundRect(t.w/2-11,-t.h/2+1,8,5,2); ctx.fill();
+
+  ctx.restore();
+}
+
+function draw() {
+  // Sky / background
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#0d0d1a');
+  grad.addColorStop(1,'#1a1a2e');
+  ctx.fillStyle=grad;
+  ctx.fillRect(0,0,W,H);
+
+  // Side buildings silhouettes
+  drawBuildings();
+
+  // Road
+  ctx.fillStyle='#1c1c2a';
+  ctx.fillRect(ROAD_X,0,ROAD_W,H);
+
+  // Road edge lines
+  ctx.strokeStyle='#ff9900';
+  ctx.lineWidth=4;
+  ctx.beginPath(); ctx.moveTo(ROAD_X,0); ctx.lineTo(ROAD_X,H); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(ROAD_X+ROAD_W,0); ctx.lineTo(ROAD_X+ROAD_W,H); ctx.stroke();
+
+  // Lane dashes
+  ctx.strokeStyle='rgba(255,255,255,0.18)';
+  ctx.setLineDash([50,40]);
+  ctx.lineDashOffset = -state.markOffset;
+  ctx.lineWidth=2;
+  for(let i=1;i<4;i++) {
+    const lx = ROAD_X + LANE_W*i;
+    ctx.beginPath(); ctx.moveTo(lx,0); ctx.lineTo(lx,H); ctx.stroke();
+  }
+  ctx.setLineDash([]);
+
+  // Traffic cars
+  state.traffic.forEach(t=>drawTrafficCar(t));
+
+  // Player cars
+  drawCar(state.p2.x, state.p2.y, state.p2.color, state.p2.alive);
+  drawCar(state.p1.x, state.p1.y, state.p1.color, state.p1.alive);
+
+  // Speed flash overlay
+  if(state.speedMult>1) {
+    const intensity = Math.min((state.speedMult-1)*0.06, 0.15);
+    ctx.fillStyle=`rgba(200,100,0,${intensity * Math.abs(Math.sin(state.tick*0.1))})`;
+    ctx.fillRect(0,0,W,H);
   }
 }
 
-function showWin() {
-  document.getElementById('win-sub-text').textContent = `Solved in ${moves} move${moves !== 1 ? 's' : ''}`;
-  document.getElementById('win-overlay').classList.add('show');
+function drawBuildings() {
+  // Left side
+  ctx.fillStyle='#111120';
+  const lb = [
+    {x:0,w:90,h:300,y:H-300},{x:10,w:70,h:200,y:H-200},
+    {x:50,w:55,h:380,y:H-380},{x:0,w:40,h:150,y:H-150}
+  ];
+  lb.forEach(b=>{ ctx.fillRect(b.x,b.y,b.w,b.h); });
+
+  // building windows left
+  ctx.fillStyle='rgba(255,220,100,0.25)';
+  for(let bx=5;bx<ROAD_X-10;bx+=18) for(let by=50;by<H-30;by+=24) {
+    if(Math.sin(bx*7+by*3)>0.2) ctx.fillRect(bx,by,8,10);
+  }
+
+  // Right side
+  ctx.fillStyle='#111120';
+  const rb=[
+    {x:W-100,w:100,h:280,y:H-280},{x:W-80,w:70,h:400,y:H-400},
+    {x:W-50,w:50,h:180,y:H-180}
+  ];
+  rb.forEach(b=>ctx.fillRect(b.x,b.y,b.w,b.h));
+  for(let bx=ROAD_X+ROAD_W+10;bx<W-5;bx+=18) for(let by=50;by<H-30;by+=24) {
+    if(Math.sin(bx*5+by*7)>0.2) ctx.fillRect(bx,by,8,10);
+  }
 }
 
-function renderBoard() {
-  const board = document.getElementById('puzzle-board');
-  const s = state.length;
-  board.style.gridTemplateColumns = `repeat(${s}, 1fr)`;
-  board.innerHTML = '';
-  state.forEach((row, r) => row.forEach((val, c) => {
-    const cell = document.createElement('div');
-    cell.className = 'cell' + (val ? ' on' : '');
-    cell.addEventListener('click', () => handleClick(r, c));
-    board.appendChild(cell);
-  }));
+/* ── RESULT ── */
+function showResult() {
+  const { crashed, elapsed, speedMult, dodged } = state;
+  let winnerText, winnerColor;
+  if(crashed==='both') { winnerText='💀 Both Crash Out!'; winnerColor='var(--muted)'; }
+  else if(crashed==='p1') { winnerText=`Player 2 Wins!`; winnerColor=p2Color; }
+  else { winnerText=`Player 1 Wins!`; winnerColor=p1Color; }
+
+  document.getElementById('result-winner').textContent = crashed==='both'?'Nobody survives 💀':winnerText;
+  document.getElementById('result-winner').style.color = winnerColor;
+  document.getElementById('result-crash').textContent = crashed==='both'?'💥':'🏆';
+  document.getElementById('res-time').textContent = Math.floor(elapsed)+'s';
+  document.getElementById('res-speed').textContent = '×'+speedMult.toFixed(1);
+  document.getElementById('res-dodged').textContent = dodged;
+  showScreen('result');
 }
 
-function updateMoves() {
-  document.getElementById('moves-counter').textContent = moves;
-  document.getElementById('moves-inline').textContent = `${moves} move${moves !== 1 ? 's' : ''}`;
-}
-
-function updateLevelDots() {
-  const c = document.getElementById('level-dots');
-  c.innerHTML = '';
-  LEVELS.forEach((_, i) => {
-    const d = document.createElement('div');
-    d.className = 'level-dot' + (i === currentLevel ? ' current' : '') + (completedLevels.has(i) && i !== currentLevel ? ' done' : '');
-    d.textContent = i + 1;
-    d.addEventListener('click', () => loadLevel(i));
-    c.appendChild(d);
-  });
-}
-
-document.getElementById('btn-reset').addEventListener('click', () => loadLevel(currentLevel));
-document.getElementById('btn-retry').addEventListener('click', () => loadLevel(currentLevel));
-document.getElementById('btn-next-level').addEventListener('click', () => {
-  loadLevel((currentLevel + 1) % LEVELS.length);
-});
-
-/* ── Card fade-in on scroll ──────────────────────────────── */
-const cards = document.querySelectorAll('.game-card');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) { e.target.style.animation = `fadeUp 0.5s ${i * 0.07}s both`; obs.unobserve(e.target); }
-  });
-}, { threshold: 0.1 });
-cards.forEach(c => { c.style.opacity = '0'; obs.observe(c); });
+document.getElementById('btn-play-again').addEventListener('click',()=>{ startCountdown(); });
+document.getElementById('btn-result-home').addEventListener('click',()=>{ stopGame(); showPage('page-home'); });
 </script>
 </body>
 </html>
